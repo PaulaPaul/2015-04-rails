@@ -1,0 +1,13 @@
+<center><h1>About the Owner</h1><center>
+  
+<p>This is all about me... my name is <%= @name %></p>
+ 
+<p>Today is <%= Date.today %>.  Have a great day! </p>
+
+<p>We are this many days into the week: <%= Date.today.wday %>.  Only <%= 7 - Date.today.wday %> to go! </p>  
+  
+<p>By the way, today is <%= Date::DAYNAMES[Date.today.wday] %>.</p>
+  
+<p>Tomorrow is <%= Date.today + 1 %>.  See you then! </p>
+  
+<H2><%= @message %></H2>
