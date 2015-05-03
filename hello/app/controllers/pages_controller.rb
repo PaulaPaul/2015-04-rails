@@ -3,4 +3,7 @@ class PagesController < ApplicationController
     @name = 'Paula Paul'
     @message = 'Have a terrific weekend!'
   end
+  
+  def about
+  end
 end
