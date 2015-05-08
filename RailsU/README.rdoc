@@ -1,0 +1,19 @@
+RailsU is a Ruby on Rails app loosely modeled after the Microsoft ASP.NET MVC 5 with Entity Framework
+sample 'Contoso University', which can be found here:
+http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application 
+
+The lesson teaches Ruby on Rails students that their understanding of MVC, ORM, routing, and other 
+concepts in Rails transfers to other frameworks, and that Rails is a very approachable framework
+for people who are new to coding, or who are intimidated by some of the complexity found in 
+other frameworks.
+
+Since I've done .NET development much longer than I've been a Rails programmer, I presented my
+thoughts on RailsU and Contoso University at an event hosted by Microsoft.  
+My presentation can be found here:
+https://prezi.com/pvapw9zqqkpg/ruby-on-rails-a-net-perspective/ 
+
+For source code and TTS classroom purposes, please refer to the RailsU repo at:
+
+https://github.com/PaulaPaul/RailsU
+
+Enjoy!
