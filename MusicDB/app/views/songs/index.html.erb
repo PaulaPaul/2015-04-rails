@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Songs</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+        <tr class="row">
+          <th>Name</th>
+          <th>Video</th>
+          <th>Artist</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+      <% @songs.each do |song| %>
+        <tr class="row">
+          <td><%= song.name %></td>
+          <td><%= song.video %></td>
+          <td><%= song.artist.name %></td>
+          <td><%= link_to 'Show', song,:class => "btn-primary btn-sm" %></td>
+          <td><%= link_to 'Edit', edit_song_path(song),:class => "btn-primary btn-sm" %></td>
+          <td><%= link_to 'Destroy', song,:class => "btn-warning btn-sm", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+  <div class="panel-footer"><%= link_to 'New Song', new_song_path,:class => "btn-primary btn-sm"  %></div>
+</div>
+
