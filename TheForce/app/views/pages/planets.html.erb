@@ -1,0 +1,28 @@
+<table>
+	<tbody>
+		<tr>
+			<th class="swapi-header">name</th>
+			<th class="swapi-header">rotation pd</th>
+			<th class="swapi-header">orbial pd</th>
+			<th class="swapi-header">diameter</th>
+			<th class="swapi-header">climate</th>
+			<th class="swapi-header">gravity</th>
+			<th class="swapi-header">terrain</th>
+			<th class="swapi-header">surface water</th>
+			<th class="swapi-header">population</th>
+		</tr>
+		<% @results.each do |planet| %>
+			<tr>
+				<td class="swapi-output"><%= planet["name"]  %>		</td>
+				<td class="swapi-output"><%= planet["rotation_period"]  %>	</td>
+				<td class="swapi-output"><%= planet["orbital_period"]  %>	</td>
+				<td class="swapi-output"><%= planet["diameter"]  %>	</td>
+				<td class="swapi-output"><%= planet["climate"]  %>	</td>
+				<td class="swapi-output"><%= planet["gravity"]  %>	</td>
+				<td class="swapi-output"><%= planet["terrain"]  %>	</td>
+				<td class="swapi-output"><%= planet["surface_water"]  %>	</td>
+				<td class="swapi-output"><%= planet["population"]  %>	</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

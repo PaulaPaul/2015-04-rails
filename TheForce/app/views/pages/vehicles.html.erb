@@ -1,0 +1,20 @@
+<table>
+	<% @results.each do |person| %>
+		<tr>
+			<td><%= person["name"]  %>		</td>
+			<td><%= person["model"]  %>	</td>
+			<td><%= person["manufacturer"]  %>	</td>
+			<td><%= starship["cost_in_credits"]  %>	</td>
+			<td><%= starship["length"]  %>	</td>
+			<td><%= starship["max_atmosphering_speed"]  %>	</td>
+			<td><%= starship["crew"]  %>	</td>
+			<td><%= starship["passengers"]  %>	</td>
+			<td><%= starship["cargo_capacity"]  %>	</td>
+			<td><%= starship["consumables"]  %>	</td>
+			<td><%= starship["vehicle_class"]  %>	</td>
+			<td><%= starship["pilots"]  %>	</td>
+		</tr>
+
+	<% end %>
+</table>
+

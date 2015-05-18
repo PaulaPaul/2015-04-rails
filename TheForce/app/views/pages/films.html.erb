@@ -1,0 +1,22 @@
+<table>
+	<tbody>
+		<tr>
+			<th class="swapi-header">title</th>
+			<th class="swapi-header">episode</th>
+			<th class="swapi-header">director</th>
+			<th class="swapi-header">producer</th>
+		</tr>
+		<% @results.each do |film| %>
+			<tr>
+				<td class="swapi-output"><%= film["title"]  %>		</td>
+				<td class="swapi-output"><%= film["episode_id"]  %>	</td>
+				<td class="swapi-output"><%= film["director"]  %>	</td>
+				<td class="swapi-output"><%= film["producer"]  %>	</td>
+			</tr>
+			<tr>
+				<td colspan=4 class="swapi-output">Opening crawl:  <%= film["opening_crawl"] %></td>
+		 	</tr>
+
+		<% end %>
+	</tbody>
+</table>

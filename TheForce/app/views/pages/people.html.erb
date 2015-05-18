@@ -1,0 +1,26 @@
+<table>
+	<tbody>
+		<tr>
+			<th class="swapi-header">name</th>
+			<th class="swapi-header">height</th>
+			<th class="swapi-header">mass</th>
+			<th class="swapi-header">hair color</th>
+			<th class="swapi-header">skin color</th>
+			<th class="swapi-header">eye color</th>
+			<th class="swapi-header">birth year</th>
+			<th class="swapi-header">gender</th>
+		</tr>
+	<% @results.each do |person| %>
+		<tr>
+			<td class="swapi-output"><%= person["name"] %> </td>
+			<td class="swapi-output"><%= person["height"] %> </td>
+			<td class="swapi-output"><%= person["mass"] %> </td>
+			<td class="swapi-output"><%= person["hair_color"] %> </td>
+			<td class="swapi-output"><%= person["skin_color"] %> </td>
+			<td class="swapi-output"><%= person["eye_color"] %> </td>
+			<td class="swapi-output"><%= person["birth_year"] %> </td>
+			<td class="swapi-output"><%= person["gender"] %> </td>
+		</tr>
+	<% end %>
+	</tbody>
+</table>

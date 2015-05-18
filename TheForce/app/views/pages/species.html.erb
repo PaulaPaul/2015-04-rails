@@ -1,0 +1,31 @@
+<table>
+	<tbody>
+		<tr>
+			<th class="swapi-header">name</th>
+			<th class="swapi-header">class</th>
+			<th class="swapi-header">designation</th>
+			<th class="swapi-header">avg height</th>
+			<th class="swapi-header">skin</th>
+			<th class="swapi-header">hair</th>
+			<th class="swapi-header">eyes</th>
+			<th class="swapi-header">avg lifespan</th>
+			<th class="swapi-header">homeworld</th>
+			<th class="swapi-header">language</th>
+		</tr>
+		<% @results.each do |species| %>
+			<tr>
+				<td class="swapi-output"><%= species["name"]  %>		</td>
+				<td class="swapi-output"><%= species["classification"]  %>	</td>
+				<td class="swapi-output"><%= species["designation"]  %>	</td>
+				<td class="swapi-output"><%= species["average_height"]  %>	</td>
+				<td class="swapi-output"><%= species["skin_colors"]  %>	</td>
+				<td class="swapi-output"><%= species["hair_colors"]  %>	</td>
+				<td class="swapi-output"><%= species["eye_colors"]  %>	</td>
+				<td class="swapi-output"><%= species["average_lifespan"]  %>	</td>
+				<td class="swapi-output"><%= species["homeworld"]  %>	</td>
+				<td class="swapi-output"><%= species["language"]  %>	</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+

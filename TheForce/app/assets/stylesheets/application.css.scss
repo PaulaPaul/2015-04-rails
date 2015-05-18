@@ -1,0 +1,56 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require foundation_and_overrides
+
+ */
+
+ .icon-bar {
+	background-color: #000000;
+}
+
+.item img {
+	color: white;
+	width: 50px;
+	height: 40px;
+}
+
+
+.icon-bar .item:hover {
+	background:#00FF00;
+}
+
+label:hover {
+	color: #FF0000;
+}
+
+row {
+	background-color: black;
+}
+
+table, tbody, tr, th, td {
+    border: 1px solid #00FF00;
+    background-color: black;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.swapi-header {
+	color: red;
+}
+
+.swapi-output {
+	color: white;
+}
+

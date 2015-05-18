@@ -1,0 +1,15 @@
+<h1>Your Buses!</h1>
+<h3>You are at: <%= @station %> Station.</h3>
+
+<div>
+	<%= @message %>
+</div>
+<br />
+
+<% @buses.each do |route, vehicle| %>
+	<div>
+		Route: <%= route %><br />
+		Vehicle: <%= vehicle %><br />
+	</div>
+	<hr />
+<% end %>

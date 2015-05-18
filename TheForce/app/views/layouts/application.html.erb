@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TheForce</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title><%= content_for?(:title) ? yield(:title) : "foundation-rails" %></title>
+
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "vendor/modernizr" %>
+    <%= javascript_include_tag "application" 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+</head>
+<body>
+<!-- Foundation - Navigation area -->	
+<div class="full-width navigation-area">
+	<div class="row"  style="background-color: black;">
+		<div class="large-12 columns icon-bar six-up">
+			    <a class="item" href="/pages/home">
+			      <%= image_tag 'yoda.png' %>
+			      <label>TheForce</label>
+			    </a>
+			    <a class="item" href="/pages/films">
+			      <%= image_tag 'vader.png' %>
+			      <label>Films</label>
+			    </a>
+			    <a class="item" href="/pages/people">
+			      <%= image_tag 'leia.png' %>
+			      <label>People</label>
+			    </a>
+			    <a class="item" href="/pages/spaceships">
+			      <%= image_tag 'wookie.png' %>
+			      <label>Starships</label>
+			    </a>
+			    <a class="item" href="/pages/species">
+			      <%= image_tag '3PO.png' %>
+			      <label>Species</label>
+			    </a>
+			        <a class="item" href="/pages/planets">
+			      <%= image_tag 'ObiWan.png' %>
+			      <label>Planets</label>
+			    </a>
+		</div>
+	</div>
+</div>
+
+<!-- Foundation - content area -->	
+<div class="full-width content-area">
+	<div class="row" style="background-color: black;">
+		<div class="large-12 columns">
+			    <%= yield %>
+		</div>
+	</div>
+</div>
+
+  <%= javascript_include_tag "application" %>
+</body>
+</html>
