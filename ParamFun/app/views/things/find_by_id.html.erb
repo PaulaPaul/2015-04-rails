@@ -1,0 +1,10 @@
+<%= form_tag("/things/display_by_id", method: "post") do %>
+	<%= label_tag(:input, "Thing Id") %>
+	<%= text_field_tag(:input) %>	
+  <%= label_tag(:color, "Thing color") %>
+	<%= text_field_tag(:color) %>
+	<%= submit_tag("Find that Thing!") %> 
+<% end %>
+
+
+

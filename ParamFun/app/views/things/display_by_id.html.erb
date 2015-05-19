@@ -1,0 +1,10 @@
+<% if @exists %>
+	<p>The Thing you requested is</p>
+  <span style="color: <%= @color %>"> 
+	  <%= @thing.name %> in <%= @color %>  <br>
+  </span>
+<% else %>
+	<p>That thing does not exist!</p>
+  <span style="color: <%= @color %>">(in any color, even <%= @color %>)</span>
+<% end %>
+<p> <%= link_to "Try Again?", '/things/find_by_id' %> </p>
