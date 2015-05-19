@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Instructor Details</h3>
+  </div>
+  <div class="panel-body">
+    <div>
+      <dl class="dl-horizontal">
+        <dt>Last Name</dt>
+        <dd><%= @instructor.last_name %></dd>
+        <dt>First Name</dt>
+        <dd><%= @instructor.first_name %></dd>
+        <dt>Hire Date</dt>
+        <dd><%= @instructor.hire_date %></dd>
+      </dl>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <%= link_to 'Edit', edit_instructor_path(@instructor),:class => "btn-primary btn-sm" %>  
+    <%= link_to 'Back', instructors_path,:class => "btn-primary btn-sm" %>
+  </div>
+</div>

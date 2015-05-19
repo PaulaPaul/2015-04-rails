@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  budget: 1.5
+  start_date: 2015-02-17
+  instructor_id: 1
+
+two:
+  name: MyString
+  budget: 1.5
+  start_date: 2015-02-17
+  instructor_id: 1
