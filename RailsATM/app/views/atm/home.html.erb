@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col s12 m12">
+    <div class="card-panel teal">
+      <span class="white-text"> 
+        <h2>Rails ATM</h2>
+        <p>Enter amounts for deposit or withdrawal, or click below to check your balance</p>
+        <div>
+         <%= form_tag("/atm/home", method: "post") do %>
+         <%= hidden_field_tag(:atmaction, value = "balance", options = {}) %>
+          <%= submit_tag("$",:class => "btn-floating waves-light green") %>  Check Balance
+         <% end %>
+        </div>
+       </span>
+    </div>
+  </div>
+</div>
+<div class='panel'>
+      <table>
+        <thead>
+          <tr>
+            <td>Deposits</td>
+            <td>Withdrawals</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <%= form_tag("/atm/home", method: "post") do %>
+              <div class="input-field col s6">
+              <%= label_tag(:d_amount, "deposit amount") %>
+              <%= text_field_tag(:d_amount) %>	
+              </div>
+              <%= hidden_field_tag(:atmaction, value = "deposit", options = {}) %>
+              <%= submit_tag("Deposit",:class => "btn waves-light") %> 
+              <% end %>
+            </td>
+            <td>
+              <%= form_tag("/atm/home", method: "post") do %>
+              <div class="input-field col s6">
+              <%= label_tag(:w_amount, "withdrawal amount") %>
+              <%= text_field_tag(:w_amount) %>	
+              </div>
+              <%= hidden_field_tag(:atmaction, value = "withdraw", options = {}) %>
+              <%= submit_tag("Withdraw",:class => "btn waves-light") %> 
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td colspan='2'><%= RailsATM::Application.config.message %></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
