@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  
+  <title>who visualized the bomp?</title>
+  
+  <style type="text/css">
+  /*
+  * The following CSS is necessary for making this a presentation and not a blob of nonsense. 
+  * Change it at your own risk. I suggest adding "custom" css at the end.
+  */
+    .slide { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      height: 100%; 
+      width: 100%; 
+      padding: 20px; 
+      page-break-after: always;
+    }
+    #navigation { 
+      position: absolute; 
+      bottom: 10px;
+      right: 10px;
+      z-index: 8675309;
+      cursor: pointer; 
+    }
+    #navigation div {
+      display: inline-block;
+      margin: 10px;
+    }
+    #counter { 
+      position: absolute; 
+      top: 10px; 
+      right: 10px; 
+      display: inline-block; 
+    }
+    
+    @media print {
+      .slide {
+        /* not static, just in case slide contents take advantage of positioning */
+        position: relative;
+        display: block !important;
+      }
+      #counter, #navigation {
+        display: none;
+      }
+    }
+    
+    /*  Custom CSS to make the presentation pretty. */
+    body { font-family: Garamond, Georgia, serif;}
+  </style>
+  <script src="../js/jquery-2.1.4.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="../js/jquery.ba-bbq.min.js"></script>
+
+  <style type="text/css">
+    * { box-sizing: border-box; }
+    #counter, #navigation { display: none; }
+    body { font-family: monospace; font-size: 4em; }  
+    .slide { padding: 100px; }
+    img { height: 500px; max-height: 80%; }
+    h1, h2, h3, h4, h5, h6 { margin: 0;}
+    h1 { color: magenta; }
+    .fire img { height: 150px; }
+    pre { font-size: .5em; max-height: 100%; overflow-y: scroll; }
+    .image img { max-height: 100%; height: 100%; }
+  </style>
+  
+  <script type="text/javascript">
+    jQuery(document).ready(function($){
+    
+      var ID = {
+        slideshow : 'simpleslides',
+        slide : 'slide',
+        counter : 'counter',
+        navigation : 'navigation',
+        next : 'next',
+        previous : 'previous',
+        current : 'current'
+      },
+      labels = {
+        next : '&rarr;',
+        previous : '&larr;',
+        separator : ' / '
+      };
+  
+      var $slideshow = $('#' + ID.slideshow),
+          $navigation = $('<div>').attr('id','navigation'),
+          $slides = $slideshow.children('div').addClass(ID.slide),
+          $currentSlide,
+          $firstSlide = $slides.first(),
+          $lastSlide = $slides.last();
+    
+      // make sure the last slide doesn't page break while printing.
+      $('head').append( '<style> .slide:nth-child(' + $slides.length + ') { page-break-after: auto }</style>' );
+    
+      // remove non-div children (like html comments which wp wraps in <p> tags)
+      $slideshow.children().not('div').remove();
+      
+      // add navigational arrows and counter
+      $navigation.append($('<a href="#">').attr('id',ID.previous).html(labels.previous));
+      $navigation.append($('<a href="#">').attr('id',ID.next).html(labels.next));
+      $slideshow.append($navigation);
+      $slideshow.append($('<div>').attr('id',ID.counter));
+      
+      var $counter = $('#'+ID.counter),
+          $next = $('#'+ID.next),
+          $previous = $('#'+ID.previous);
+      
+                 
+      /*** FUNCTIONS ***/
+      
+      var updateCounter = function() {
+        // updates the counter
+        $counter.text(slidePointer.current + labels.separator + slidePointer.last);
+      };
+    
+      var updateURL = function() {
+        // updates slide state
+        var currentURL = document.location.toString();
+    
+        if (currentURL.indexOf('#') != 1){
+          currentURL = currentURL.substr(0,currentURL.indexOf('#'));
+        }
+    
+        $.bbq.pushState({ slide: slidePointer.current });
+      };
+      
+      var hideCurrentSlide = function() {
+        // hide the current slide
+        if ( $currentSlide ) {
+          $currentSlide.hide().removeClass(ID.current);
+        }
+      };
+      
+      var nextSlide = function() {
+        // hide current slide
+        hideCurrentSlide();
+        
+        // get the next slide
+        var nextSlide = $currentSlide.next();
+        
+        // not the last slide => go to the next one and increment the counter
+        if ( slidePointer.current != slidePointer.last ) {
+          nextSlide.show().addClass(ID.current);
+          $currentSlide = nextSlide;
+          slidePointer.current++;
+        }
+        else {
+          // is the last slide => go back to the first slide and reset the counter.
+          $firstSlide.show().addClass(ID.current);
+          $currentSlide = $firstSlide;
+          slidePointer.current = 1;
+        }
+        
+        // update counter
+        updateCounter();
+    
+        // update url
+        updateURL();
+      };
+      
+      var previousSlide = function() {
+        // hide current slide
+        hideCurrentSlide();
+        
+        // get the previous slide
+        var prevSlide = $currentSlide.prev();
+        
+        // If not the first slide, go to the previous one and decrement the counter
+        if ( slidePointer.current != 1 ) {
+          prevSlide.show().addClass(ID.current);
+          $currentSlide = prevSlide;
+          slidePointer.current--;
+        }
+        else {
+          // This must be the first slide, so go back to the last slide and set the counter.
+          $lastSlide.show().addClass(ID.current);
+          $currentSlide = $lastSlide;
+          slidePointer.current = slidePointer.last;
+        }
+        
+        // update counter       
+        updateCounter();  
+    
+        // update URL
+        updateURL();
+      };
+    
+      var goToSlide = function(slideNumber) {
+        // hide current slide
+        hideCurrentSlide();
+        moveToSlide = slideNumber-1;
+    
+        $currentSlide = $slides.eq(moveToSlide);
+        $currentSlide.show().addClass(ID.current);
+        slidePointer.current = slideNumber;
+    
+        // update counter
+        updateCounter();
+      }
+      
+    
+      /*** INIT SLIDESHOW ***/
+      
+      // Initially hide all slides
+      $slides.hide();
+      
+      // The first slide is number first, last is slides length
+      var slidePointer = {
+        current : 1,
+        last : $slides.length
+      };
+    
+      var slideState = parseInt($.bbq.getState('slide'));
+    
+      if ( slideState && (slideState > 0 && slideState <= $slides.length )) {
+        // if slide= hash state is given and valid, go to that slide
+        goToSlide(slideState);
+      }
+      else {
+        // The first slide is the first slide, so make visible and set the counter...
+        $currentSlide = $firstSlide.show().addClass(ID.current);
+        updateCounter();
+      }
+      
+      
+      /*** EVENTS ***/
+      
+      // "next" arrow clicked => next slide
+      $next.click( function(e){ 
+        e.preventDefault();
+        nextSlide();
+      });
+      
+      // "previous" arrow clicked => previous slide
+      $previous.click( function(e){ 
+        e.preventDefault();
+        previousSlide() 
+      });
+      
+      // Add keyboard shortcuts for changing slides
+      $(document).keydown(function(e){
+        if (e.which == 39) { 
+          // right key pressed => next slide
+          nextSlide();
+          return false;
+        }
+        else if (e.which == 37) {
+            // left or l key pressed => previous slide
+            previousSlide();
+            return false;
+          }
+      });
+                 
+    }); 
+  </script>
+  
+  <link rel="stylesheet" href="../css/highlightjs/tomorrow.css">
+  <script src="../js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+
+<body id="simpleslides">  
+    
+  <div>
+    <h1>hello web rebels!</h1>
+  </div>
+  
+  <div>
+    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/EU1CDSP7FRk" frameborder="0" allowfullscreen></iframe>
+  </div>
+  
+  <div>
+    <h2>1999</h2>
+  </div>
+  
+  <div>
+    <ul>
+      <li>hair</li>
+    </ul>
+  </div>
+  
+  <div>
+    <ul>
+      <li>hair</li>
+      <li>art</li>
+    </ul>
+  </div>
+  
+  <div>
+    <ul>
+      <li>hair</li>
+      <li>art</li>
+      <li>music</li>
+    </ul>
+  </div>
+    
+  <div>
+    <div>
+    <ul>
+      <li>hair</li>
+      <li>art</li>
+      <li>music</li>
+      <li>code</li>
+    </ul>
+  </div>
+  </div>
+  
+  <div>
+    <div>
+      <p>"deceptacon" - le tigre</p>
+      <img src="assets/deceptacon.jpg" />
+      <!-- lofi, female vocals, doo-wop -->
+    </div>
+  </div>
+    
+  <div>
+    <h2>who *took* the bomp?</h2>
+  </div>
+    
+  <div>
+    <h2>what is a bomp?</h2>
+  </div>
+  
+  <div>
+    <h3>doo-wop</h3>
+  </div>
+  
+  <div>
+    <h3>bomp bomp bomp</h3>
+  </div>
+  
+  <div>
+    <h3>shang-a-lang</h3>
+  </div>
+  
+  <div>
+    <h3>bip a dip-da-dip</h3>
+  </div>
+  
+  <div>
+    <h3>rama-lama-ding-dong</h3>
+  </div>
+  
+  <div>
+    <h2>who put the bomp?</h2>
+  </div>
+  
+  <div>
+    <p>
+      Who put the bomp <br />
+      In the bomp bah bomp bah bomp <br />
+      Who put the ram <br />
+      In the rama lama ding dong <br />
+      Who put the bop <br />
+      In the bop shoo bop shoo bop <br />
+      Who put the dip <br />
+      In the dip da dip da dip
+    </p>
+  </div>
+  
+  <div>
+    <h2>who *took* the bomp?</h2>
+  </div>
+  
+  <div>
+    <h1>who *visualized* the bomp?</h1>
+  </div>
+  
+  <div>
+    <h1>who *visualized* the bomp?</h1>
+    <h3>by jenn schiffer</h3>
+  </div>
+
+  <!-- bomp -->
+  
+  <div>
+    <h2>side notes</h2>
+    <ul>
+      <li>this is only tested in firefox, so i'll use -moz- prefixes where applicable. you can replace with the prefix of your browser if you want.</li>
+      <li>i used sass as a preprocessor</li>
+    </ul>
+  </div>
+  
+  <div>
+    <img src="assets/deceptacon.jpg" />
+  </div>
+  
+  <div>
+    <!-- the scene -->
+    <iframe src="demo-scene.html" width="100%" height="100%"></iframe>
+  </div>
+  
+  <div>
+    <pre><code class="html">&lt;div id="room">
+  &lt;div id="decor">
+    &lt;div id="front-wall" class="wall"> &lt;/div>
+    &lt;div id="back-wall" class="wall"> 
+      &lt;div id="knob"> &lt;/div>
+      &lt;div id="screen"> 
+        &lt;div id="ladder"> 
+          &lt;div class="rail left"> &lt;/div>
+          &lt;div class="rail right"> &lt;/div>
+          &lt;div class="rung one"> &lt;/div>
+          &lt;div class="rung two"> &lt;/div>
+          &lt;div class="rung three"> &lt;/div>
+          &lt;div class="rung four"> &lt;/div>
+          &lt;div class="rung five"> &lt;/div>
+          &lt;div class="rung six"> &lt;/div>
+          &lt;div class="rung seven"> &lt;/div>
+        &lt;/div>
+      &lt;/div>
+    &lt;/div>
+    &lt;div id="floor"> &lt;/div>
+  &lt;/div>
+&lt;/div></code></pre>
+  </div>
+  
+  <div>
+    <img src="assets/deceptacon.jpg" />
+  </div>
+  
+  <div>
+    <!-- the dancers -->
+    <iframe src="demo-dancers.html" width="100%" height="100%"></iframe>
+  </div>
+  
+  <div>
+    <pre><code class="html">&lt;div id="dancers">
+  &lt;div class="dancer left"> 
+    &lt;div class="head">
+      &lt;div class="hat"> &lt;/div>
+      &lt;div class="face"> 
+        &lt;div class="glasses"> &lt;/div>
+      &lt;/div>
+    &lt;/div>
+    
+    &lt;div class="torso"> &lt;/div>
+    
+    &lt;div class="arm left">
+      &lt;div class="bicep"> &lt;/div>
+      &lt;div class="forearm"> 
+        &lt;div class="hand"> &lt;/div>
+      &lt;/div>
+    &lt;/div>
+    
+    &lt;div class="arm right">
+      &lt;div class="bicep"> &lt;/div>
+      &lt;div class="forearm"> 
+        &lt;div class="hand"> &lt;/div>
+      &lt;/div>
+   &lt;/div>
+    
+    &lt;div class="leg left">
+      &lt;div class="thigh"> &lt;/div>
+      &lt;div class="calf"> 
+        &lt;div class="foot"> &lt;/div> 
+      &lt;/div>
+    &lt;/div>
+    
+    &lt;div class="leg right">
+      &lt;div class="thigh"> &lt;/div>
+      &lt;div class="calf"> 
+        &lt;div class="foot"> &lt;/div> 
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
+  
+  
+  
+  &lt;div class="dancer right"> 
+    &lt;div class="head">
+      &lt;div class="hat"> &lt;/div>
+      &lt;div class="face"> 
+        &lt;div class="glasses"> &lt;/div>
+      &lt;/div>
+    &lt;/div>
+    
+    &lt;div class="torso"> &lt;/div>
+    
+    &lt;div class="arm left">
+      &lt;div class="bicep"> &lt;/div>
+      &lt;div class="forearm"> 
+        &lt;div class="hand"> &lt;/div>
+      &lt;/div>
+    &lt;/div>
+    
+    &lt;div class="arm right">
+      &lt;div class="bicep"> &lt;/div>
+      &lt;div class="forearm"> 
+        &lt;div class="hand"> &lt;/div>
+      &lt;/div>
+   &lt;/div>
+    
+    &lt;div class="leg left">
+      &lt;div class="thigh"> &lt;/div>
+      &lt;div class="calf"> 
+        &lt;div class="foot"> &lt;/div> 
+      &lt;/div>
+    &lt;/div>
+    
+    &lt;div class="leg right">
+      &lt;div class="thigh"> &lt;/div>
+      &lt;div class="calf"> 
+        &lt;div class="foot"> &lt;/div> 
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
+&lt;/div>
+</code></pre>
+  </div>
+  
+  <div>
+    <h2>and a lot of "C.S.S."</h2>
+  </div>
+  
+  <div>
+    <pre><code class="css">$resolution: 1.5;
+
+* { margin: 0; padding: 0; position: relative; }
+
+body { 
+  background-color: magenta;
+}
+
+#room {
+  width: 800px * $resolution;
+  height: 400px * $resolution; 
+  margin: 20px auto;
+  border-bottom: 10px * $resolution solid #999;
+  background-color: #000;
+  #decor {
+    width: 90%;
+    height: 100%;
+    margin: 0 auto;
+    .wall {
+      float: left;
+      background-color: #97A4A9;
+      box-shadow: inset 0 5px 20px #000;
+      &#back-wall {
+        width: 85%;
+        height: 75%;
+      }
+      &#front-wall {
+        width: 15%;
+        height: 100%;
+        background-color: #DFE6DF;
+        box-shadow: none;
+        float: right;
+      }
+    }
+    
+    #knob {
+      background-color: #343233;
+      width: 10px * $resolution;
+      height: 5px * $resolution;
+      border-radius: 0px 3px * $resolution 3px * $resolution 0px;
+      box-shadow: 2px 2px 5px #333;
+      position: absolute;
+      left: 0px;
+      top: 200px * $resolution;
+    }
+    
+    #screen {
+      background-color: #A2242A;
+      width: 60%;
+      height: 100%;
+      margin: 0 auto;
+      border-bottom: 5px * $resolution solid #fff;
+      z-index: 1;
+    }
+    
+    #ladder {
+      width: 20%;
+      height: 100%;
+      left: 5px * $resolution;      
+      
+      .rail,
+      .rung {
+        background-color: #65362D;
+        position: absolute;
+        left: 0;
+        bottom: -5px * $resolution;
+      }
+      
+      .rail {
+        width: 5px * $resolution;
+        height: 101.5%;
+        
+        &.right {
+          left: 100%;
+          right: 0;
+        }
+      }
+      
+      .rung {
+        width: 100%;
+        height: 4px * $resolution;
+        
+        &.one {
+          top: 20px * $resolution;
+        }        
+        &.two {
+          top: 60px * $resolution;
+        }        
+        &.three {
+          top: 105px * $resolution;
+        }        
+        &.four {
+          top: 150px * $resolution;
+        }       
+        &.five {
+          top: 200px * $resolution;
+        }        
+        &.six {
+          top: 250px * $resolution;
+        }        
+        &.seven {
+          top: 300px * $resolution;
+        }
+      }
+
+    }
+    
+    #floor {
+      float: left;
+      width: 85%;
+      height: 25%;
+      background-color: #967D31;
+    }
+  }
+  
+  #dancers {
+    position: absolute;
+    top: 45px * $resolution;
+    .dancer {
+      position: absolute;
+      left: 275px * $resolution;
+      z-index: 2;
+      &.right {
+        left: 425px * $resolution;
+      }
+      
+      .head {
+        left: 22px * $resolution;
+        top: 3px * $resolution;
+        z-index: 3;
+        .hat {
+          background-color: #FDF16B;
+          width: 30px * $resolution;
+          height: 25px * $resolution;
+          border-radius: 10px * $resolution 10px * $resolution 0 0;
+        }
+        .face {
+          background-color: #E27F68;
+          width: 30px * $resolution;
+          height: 28px * $resolution;
+          border-radius: 0 0 50px * $resolution 50px * $resolution;
+          .glasses {
+            background-color: black;
+            width: 28px * $resolution;
+            height: 12px * $resolution;
+            border-radius: 2px * $resolution 2px * $resolution 10px * $resolution 10px * $resolution;
+            left: 1px * $resolution;
+          }
+        }
+      }
+      .torso {
+        background-color: #9C5B3D;
+        width: 70px * $resolution;
+        height: 150px * $resolution;
+        top: -3px * $resolution;
+      }
+      .arm {
+        position: absolute;
+        top: 50px * $resolution;
+        .bicep {
+          background-color: #9C5B3D;
+          width: 23px * $resolution;
+          height: 55px * $resolution;
+          border-radius: 50px * $resolution 0 0 0;
+        }
+        .forearm {
+          background-color: #9C5B3D;
+          width: 20px * $resolution;
+          height: 50px * $resolution;
+        }
+        .hand {
+          background-color: #999;
+          width: 15px * $resolution;
+          height: 25px * $resolution;
+          left: 3px * $resolution;
+          bottom: -50px * $resolution;
+        }
+        
+        &.left {
+          left: -23px * $resolution;
+        }
+        
+        &.right {
+          right: -23px * $resolution;
+          .bicep {
+            border-radius: 0 50px * $resolution 0 0;
+          }
+          .forearm {
+            left: 3px * $resolution;
+          }
+          .hand {
+            background-color: #E27F68;
+            left: 5px * $resolution;
+          }
+        }      
+      }
+      .leg {
+        position: absolute;
+        top: 200px * $resolution;
+        .thigh {
+          background-color: #9C5B3D;
+          width: 30px * $resolution;
+          height: 35px * $resolution;
+        }
+        .calf {
+          background-color: #9C5B3D;
+          width: 30px * $resolution;
+          height: 65px * $resolution;
+        }
+        .foot {
+          background-color: #D62418;
+          width: 19px * $resolution;
+          height: 20px * $resolution;
+          left: 6px * $resolution;
+          top: 65px * $resolution;
+          border-top: 4px * $resolution solid #fff;
+        }
+        
+        &.left {
+          left: 0;
+        }
+        
+        &.right {
+          right: 0; 
+        }
+      }
+    }
+  }
+}</code></pre>
+  </div>
+  
+  <div>
+    <h2>let's move side to side!</h2>
+  </div>
+  
+  <div>
+    <pre><code class="html">&lt;marquee> [insert dancers here] &lt;/marquee></code></pre>
+  </div>
+
+  <div>
+    <marquee> [insert dancers here] </marquee>
+  </div>
+  
+  <div>
+    <img src="assets/w3c.png" />
+  </div>
+  
+  <div>
+    <img src="assets/w3c2.png" />
+  </div>
+  
+  <div>
+    <img src="assets/sad.jpg" />
+  </div>
+  
+  <div>
+    "C.S.S." keyframes/animations
+  </div>
+  
+  <div>
+    <pre><code class="js">.marquee {
+  -moz-animation: marquee 4s infinite linear;
+}
+
+@-moz-keyframes marquee {
+  0% { left: 0;}
+  25% { left: 130px; }
+  50% { left: 0; }
+  75% { left: -130px; }
+  100% { left: 0; }
+}
+</code></pre>
+  </div>
+  
+  <div>
+    <h2>key events</h2>
+  </div>
+
+  <div>
+    <h2>key events</h2>
+    <p>aka you might not need jquery and neither do i but i'm going to anyway so here we gooooooo</p>
+  </div>
+  
+  <div>
+    <pre><code>$('body').keypress(function(e){
+    
+  // choose action depending on key code
+  switch ( e.which ) {
+    
+    case 0:
+      // arrow 
+      $('#dancers').toggleClass('marquee');
+      break;
+      
+      // blah blah a bunch of other cases will follow...
+  }  
+});</code></pre>
+  </div>       
+
+  
+  <div>
+    <!-- marquee -->
+   <div class="fire" style="text-align: center;">
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+    <p>~*electric sliiiide*!</p>
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+  </div> 
+   </div>
+  
+  <div>
+    consider marquee undeprecrated
+  </div>
+    
+  <div class="fire" style="text-align: center;">
+    <p><img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /></p>
+    <p>~*you're welcome*!</p>
+    <p><img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /></p>
+  </div>
+  
+  <div>
+    <h2>sick dance moves</h2>
+    <!--NOTE: it's early, jet lag - don't overexert -->
+  </div>
+  
+  <div>
+    <pre><code lang="css">.bop-head {
+  .head {
+    -moz-animation: headbop 600ms infinite linear;
+  }
+}
+
+@-moz-keyframes headbop {
+  25% { transform-origin: 0 50%; transform: rotate(-10deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform-origin: 50% 0; transform: rotate(10deg); }
+}</code></pre>
+  </div>
+  
+  <div>
+    <!-- move head -->
+  <div class="fire" style="text-align: center;">
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+    <p>~*bop it*!</p>
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+  </div>  </div>
+
+  <div>
+    <pre><code>.bend-arms .forearm { 
+  top: 25px; 
+}
+      
+.bend-arms .left > .forearm {
+  -moz-animation: armbend-left 600ms infinite linear; 
+}
+.bend-arms .right > .forearm {
+  transform: rotateX(180deg);
+  -moz-animation: armbend-right 600ms infinite linear; 
+}
+
+@-moz-keyframes armbend-left {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(180deg); }
+}
+
+@-moz-keyframes armbend-right {
+  0% { transform: rotateX(180deg); }
+  50% { transform: rotateX(0deg); }
+}</code></pre>
+  </div>
+  
+  <div>
+    <!-- move arm -->
+  <div class="fire" style="text-align: center;">
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+    <p>~*work them 'ceps*!</p>
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+  </div>  </div>
+  
+  <div>
+    <pre><code>.bend-legs .dancer {
+  -moz-animation: body-rock 600ms infinite linear; 
+}
+
+.bend-legs .thigh {
+  height: 60px; 
+}
+
+.bend-legs .calf {
+  top: -30px; 
+}
+
+.bend-legs .left > .calf {
+  -moz-animation: legbend-left 600ms infinite linear; 
+}
+
+.bend-legs .right > .calf {
+  transform: rotateX(-90deg);
+  -moz-animation: legbend-right 600ms infinite linear;
+}
+
+@-moz-keyframes body-rock {
+  25% { transform-origin: 0 50%; transform: rotate(1deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform-origin: 50% 0; transform: rotate(-1deg); }
+}
+
+@-moz-keyframes legbend-left {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(-90deg); }
+}
+
+@-moz-keyframes legbend-right {
+  0% { transform: rotateX(-90deg); }
+  50% { transform: rotateX(0deg); }
+}</code></pre>
+  </div>
+  
+  <div>
+    <!-- move head, arm, legs -->
+  <div class="fire" style="text-align: center;">
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+    <p>~*you better jog*!</p>
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+  </div>  </div>
+
+  <div>
+    <pre><code>var loadAudio = function(url, ctx) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
+  request.responseType = 'arraybuffer';
+
+  request.onload = function() {
+    ctx.decodeAudioData(request.response, function(buffer) {
+      midiBuffer = buffer;
+    });
+  };
+  request.send();
+};
+
+var playSong = function(){
+  audioTime = audioCtx.currentTime;
+  playSound = audioCtx.createBufferSource();
+  playSound.buffer = midiBuffer;
+  playSound.connect(audioCtx.destination);
+  playSound.start(0, audioOffset);
+      
+  DOM.dancers.attr('class', currentMoves);
+};
+
+var pauseSong = function(){
+  playSound.stop();
+  audioOffset += audioCtx.currentTime - audioTime;
+  currentMoves = DOM.dancers.attr('class');
+};
+
+// web audio api turn upppp
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioCtx = new AudioContext();
+loadAudio(audioURL, audioCtx);</code></pre>
+  </div>
+  
+  <div>
+    <!-- audio -->
+  <div class="fire" style="text-align: center;">
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+    <p>~*play that funky music*!</p>
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+  </div>  </div>
+  
+  <div>
+    <ul>
+      <li>key events</li>
+      <li>moving shapes around</li>
+      <li>p much anything else!</li>
+    </ul>
+  </div>
+  
+  <div class="fire" style="text-align: center;">
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+    <p>~*cool fun dance party time*!</p>
+    <p><img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /> <img src="assets/flame.gif" /></p>
+  </div>
+  
+  
+  <!-- art -->
+  
+  <div>
+    <h2>what</h2>
+  </div>  
+  
+  <div>
+    <h2>how</h2>
+  </div>  
+  
+  <div>
+    <h2>who</h2>
+  </div>
+  
+  <div>
+    <h2>why</h2>
+  </div>  
+  
+  <div>
+    <h2>why would you do this?</h2>
+  </div> 
+   
+  <div>
+    <h2>WHY WOULD YOU DO THIS?</h2>
+  </div>  
+  
+  <div style="font-size: 2em;">
+    <h2>WHY WOULD YOU</h2>
+  </div> 
+   
+  <div style="font-size: 4em;">
+    <h2>WHY</h2>
+  </div>
+  
+  <div style="font-size: 6em;">
+    <h2>WHY</h2>
+  </div>  
+  
+  <div style="font-size: 6em;">
+    <img src="assets/sad2.png" />
+  </div>
+  
+  <div style="font-size: 6em;">
+    <h2>WHY</h2>
+  </div>
+  
+  <div>
+    <h2>it's fun!</h2>
+  </div>
+  
+  <div>
+    <h2>for the arts & entertainment industries</h2>
+  </div>
+  
+  <div>
+    <h2>pulsewave [.org]</h2>
+    <img src="assets/pulsewave.jpg" />
+    <p><small>(Photo: Ugly Machine Productions [http://emi.spicer.io])</small></p>
+  </div>
+  
+  <div>
+    <h2>lwlvl festival</h2>
+    <img src="assets/lwlvl.jpg" />
+    <p><small>(Photo: Sophie Weiner/ANIMALNewYork)</small></p>
+  </div>
+  
+  <div>
+    <h2>random weirdos playing rock music</h2>
+    <img src="assets/easternhollows.jpg" />
+  </div>
+  
+  <div>
+    <h2>random weirdos playing rock music</h2>
+    <img src="assets/easternhollows2.jpg" />
+  </div>
+  
+  <div>
+    <h2>made in ny media center</h2>
+    <img src="assets/mediacenter.jpg" />
+  </div>
+    
+  <div>
+    <h2>made in ny media center</h2>
+    <img src="assets/mediacenter2.jpg" />
+  </div>
+  
+    <div>
+    <h2>made in ny media center</h2>
+    <img src="assets/mediacenter3.jpg" />
+  </div>
+    
+  <div>
+    <h2>blah blah, use art to learn code or whatever</h2>
+  </div>
+  
+  <div class="fire" style="text-align: center;">
+    <p><img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /> <img src="assets/dollar.gif" /></p>
+    <h2>thank you</h2>
+    
+    <ul>
+      <li>@jennschiffer</li>
+      <li>http://jennmoney.biz</li>
+      <li>jenn@dotbiz.info</li>
+    </ul>
+  </div>
+  
+  <div class="image">
+    <img src="assets/smooth.png" />
+  </div>
+
+</body>
+</html>
