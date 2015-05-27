@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Inventory Items</h1>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Qty</th>
+      <th>Photo</th>
+      <th>Product type</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @inventory_items.each do |inventory_item| %>
+      <tr>
+        <td><%= inventory_item.name %></td>
+        <td><%= inventory_item.qty %></td>
+        <td><%= inventory_item.photo %></td>
+        <td><%= inventory_item.product_type.name %></td>
+        <td><%= link_to 'Show', inventory_item %></td>
+        <td><%= link_to 'Edit', edit_inventory_item_path(inventory_item) %></td>
+        <td><%= link_to 'Destroy', inventory_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>Item counts by product type:</p>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Product Type</th>
+      <th>Qty</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    <% @type_counts.each do |key, value| %>
+        <tr>
+          <td><%= key %></td>
+          <td><%= value %></td>
+        <tr>
+    <% end %>
+  </tbody>
+  
+</table>
+
+<br>
+
+<%= link_to 'New Inventory item', new_inventory_item_path %>
