@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Marbles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Color</th>
+      <th>Person</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @marbles.each do |marble| %>
+      <tr>
+        <td><%= marble.name %></td>
+        <td><%= marble.color %></td>
+        <td><%= marble.person %></td>
+        <td><%= link_to 'Show', marble %></td>
+        <td><%= link_to 'Edit', edit_marble_path(marble) %></td>
+        <td><%= link_to 'Destroy', marble, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Marble', new_marble_path %>

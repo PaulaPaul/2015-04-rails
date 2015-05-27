@@ -1,0 +1,29 @@
+<%= form_for(@marble) do |f| %>
+  <% if @marble.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@marble.errors.count, "error") %> prohibited this marble from being saved:</h2>
+
+      <ul>
+      <% @marble.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :color %><br>
+    <%= f.text_field :color %>
+  </div>
+  <div class="field">
+    <%= f.label :person_id %><br>
+    <%= f.collection_select :person_id, @people, :id, :email %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

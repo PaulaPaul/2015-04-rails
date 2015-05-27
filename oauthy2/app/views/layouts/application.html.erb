@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Oauthy2</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <p class="notice"<%= notice %></p>
+  <p class="alert"<%= alert %></p>
+
+<% if person_signed_in? %>
+  Signed in as <%= current_person.email %>. Not you?
+	<%= link_to "Sign out", destroy_person_session_path, :method => :delete %>
+<% else %>
+  <%= link_to "Sign Up", new_person_registration_path %>
+	<%= link_to "Sign in with Facebook", person_omniauth_authorize_path(:facebook) %>
+	<%= link_to "Sign in with Twitter", person_omniauth_authorize_path(:twitter) %>
+	<%= link_to "Sign in with LinkedIn", person_omniauth_authorize_path(:linkedin) %>
+<% end %>
+
+<%= yield %>
+
+<%=  ENV['FACEBOOK_APPID'] %>
+  
+</body>
+</html>
