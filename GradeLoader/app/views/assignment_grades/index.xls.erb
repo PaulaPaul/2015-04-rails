@@ -1,0 +1,29 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Worksheet ss:Name="grades">
+  <Table>
+   <Row>
+    <Cell><Data ss:Type="String">ID</Data></Cell>
+    <Cell><Data ss:Type="String">Course</Data></Cell>
+    <Cell><Data ss:Type="String">Student</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Letter grade</Data></Cell>
+    <Cell><Data ss:Type="String">Percent grade</Data></Cell>
+   </Row>
+   <% @assignment_grades.each do |grade| %>
+   <Row>
+     <Cell><Data ss:Type="Number"><%= grade.id %></Data></Cell>
+     <Cell><Data ss:Type="String"><%= grade.course.name %></Data></Cell>
+     <Cell><Data ss:Type="String"><%= grade.student.name %></Data></Cell>
+     <Cell><Data ss:Type="String"><%= grade.assignment %></Data></Cell>
+     <Cell><Data ss:Type="String"><%= grade.letter_grade %></Data></Cell>
+     <Cell><Data ss:Type="Number"><%= grade.percent_grade %></Data></Cell>
+   </Row>
+   <% end %> 
+  </Table>
+ </Worksheet>
+</Workbook>

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @student.name %>
+</p>
+
+<p>
+  <strong>Major:</strong>
+  <%= @student.major %>
+</p>
+
+<p>
+  <strong>Photo:</strong>
+  <%= image_tag(@student.photo, :width => 200) if @student.photo.present? %>
+</p>
+
+<%= link_to 'Edit', edit_student_path(@student) %> |
+<%= link_to 'Back', students_path %>

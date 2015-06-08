@@ -1,0 +1,46 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Assignment Grades</h1>
+
+<p> 
+<%= link_to "Download CSV", assignment_grades_path(format: "csv") %>  |  
+<%= link_to "Download XLS", assignment_grades_path(format: "xls") %>  |
+<%= link_to "JSON API", assignment_grades_path(format: "json") %>
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Assignment</th>
+      <th>Letter grade</th>
+      <th>Percent grade</th>
+      <th>Student</th>
+      <th>Course</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @assignment_grades.each do |assignment_grade| %>
+      <tr>
+        <td><%= assignment_grade.assignment %></td>
+        <td><%= assignment_grade.letter_grade %></td>
+        <td><%= assignment_grade.percent_grade %></td>
+        <td><%= assignment_grade.student.name %></td>
+        <td><%= assignment_grade.course.name %></td>
+        <td><%= link_to 'Show', assignment_grade %></td>
+        <td><%= link_to 'Edit', edit_assignment_grade_path(assignment_grade) %></td>
+        <td><%= link_to 'Destroy', assignment_grade, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= form_tag import_assignment_grades_path, multipart: true do %>
+  <%= file_field_tag :file %> </br>
+  <%= submit_tag "Import grades",  :class => "btn-primary btn-sm" %>
+<% end %>
+
+<br>
+
+<%= link_to 'New Assignment grade', new_assignment_grade_path %>

@@ -1,0 +1,25 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Worksheet ss:Name="courses">
+  <Table>
+   <Row>
+    <Cell><Data ss:Type="String">ID</Data></Cell>
+    <Cell><Data ss:Type="String">Credits</Data></Cell>
+    <Cell><Data ss:Type="String">Term</Data></Cell>
+    <Cell><Data ss:Type="String">Instructor</Data></Cell>
+   </Row>
+   <% @courses.each do |course| %>
+   <Row>
+    <Cell><Data ss:Type="Number"><%= course.id %></Data></Cell>
+    <Cell><Data ss:Type="Number"><%= course.credits %></Data></Cell>
+    <Cell><Data ss:Type="String"><%= course.term %></Data></Cell>
+    <Cell><Data ss:Type="String"><%= course.instructor %></Data></Cell>
+   </Row>
+   <% end %> 
+  </Table>
+ </Worksheet>
+</Workbook>

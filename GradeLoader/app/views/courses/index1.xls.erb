@@ -1,0 +1,16 @@
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Credits</th>
+    <th>Term</th>
+    <th>Instructor</th>
+  </tr>
+  <% @courses.each do |course| %>
+  <tr>
+    <td><%= course.id %></td>
+    <td><%= course.credits %></td>
+    <td><%= course.term %></td>
+    <td><%= course.instructor %></td>
+  </tr>
+  <% end %>
+</table>
