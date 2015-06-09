@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Project name:</strong>
+  <%= @wizmodel.project_name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @wizmodel.description %>
+</p>
+
+<p>
+  <strong>Cheap material:</strong>
+  <%= @wizmodel.cheap_material %>
+</p>
+
+<p>
+  <strong>Expensive material:</strong>
+  <%= @wizmodel.expensive_material %>
+</p>
+
+<p>
+  <strong>Cheap color:</strong>
+  <%= @wizmodel.cheap_color %>
+</p>
+
+<p>
+  <strong>Expensive color:</strong>
+  <%= @wizmodel.expensive_color %>
+</p>
+
+<p>
+  <strong>Current step:</strong>
+  <%= @wizmodel.current_step %>
+</p>
+
+<%= link_to 'Edit', edit_wizmodel_path(@wizmodel) %> |
+<%= link_to 'Back', wizmodels_path %>

@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Wizmodels</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Project name</th>
+      <th>Description</th>
+      <th>Cheap material</th>
+      <th>Expensive material</th>
+      <th>Cheap color</th>
+      <th>Expensive color</th>
+      <th>Current step</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @wizmodels.each do |wizmodel| %>
+      <tr>
+        <td><%= wizmodel.project_name %></td>
+        <td><%= wizmodel.description %></td>
+        <td><%= wizmodel.cheap_material %></td>
+        <td><%= wizmodel.expensive_material %></td>
+        <td><%= wizmodel.cheap_color %></td>
+        <td><%= wizmodel.expensive_color %></td>
+        <td><%= wizmodel.current_step %></td>
+        <td><%= link_to 'Show', wizmodel %></td>
+        <td><%= link_to 'Edit', edit_wizmodel_path(wizmodel) %></td>
+        <td><%= link_to 'Destroy', wizmodel, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Wizmodel', new_wizmodel_path %>

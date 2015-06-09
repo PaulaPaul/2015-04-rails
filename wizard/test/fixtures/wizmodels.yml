@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  project_name: MyString
+  description: MyText
+  cheap_material: MyString
+  expensive_material: MyString
+  cheap_color: MyString
+  expensive_color: MyString
+  current_step: 1
+
+two:
+  project_name: MyString
+  description: MyText
+  cheap_material: MyString
+  expensive_material: MyString
+  cheap_color: MyString
+  expensive_color: MyString
+  current_step: 1
