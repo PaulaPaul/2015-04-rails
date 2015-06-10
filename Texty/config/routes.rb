@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  root to: 'wizmodels#index'
-  get 'wizmodels/newangular' => 'wizmodels#new' #allow for two different 'new' wizards, one with angular one that posts
-  resources :wizmodels
+  root to: 'instructors#index'
+  
+  get 'instructors/:id/text' => 'instructors#text', as: :text
+  
+  resources :instructors
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

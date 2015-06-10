@@ -1,0 +1,31 @@
+<h1>New Wizmodel - Angular Wizard</h1>
+<p>This is an alternate version of the New form that uses Angular.js instead of posting back to the controller on every step of the wizard.  Information is collected client side then posted to the server on completion of the last step</p>
+<%= form_for(@wizmodel) do |f| %>
+  <% if @wizmodel.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@wizmodel.errors.count, "error") %> prohibited this wizmodel from being saved:</h2>
+
+      <ul>
+      <% @wizmodel.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<br>
+  Current Step <%= Wizard::Application.config.current_step %> 
+<br>
+  Current Index <%= Wizard::Application.config.current_index %> 
+<br>
+  Action <%= @action %> 
+<br>
+  <%= render "#{Wizard::Application.config.current_step}_step", :f => f %>
+  
+  <div class="actions">
+    <p><%= f.submit "Continue", :name => "continue" %></p>
+    <p><%= f.submit "Back", :name => "back_button" unless Wizard::Application.config.current_index == 0  %></p>
+  </div>
+
+<% end %>
+
+<%= link_to 'Back to Index', wizmodels_path %>

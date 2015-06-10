@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+	<p>DEBUG Twilio AC_SID: <%= ENV['AC_SID'] %> </p>
+	<p>DEBUG Twilio AUTH_TOKEN: <%= ENV['AUTH_TOKEN'] %></p>
+	<p>DEBUG Twilio Number: <%= ENV['TW_NUMBER'] %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @instructor.name %>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <%= @instructor.phone %>
+</p>
+
+<h2>Text the Prof!</h2>
+
+<%= form_tag("/instructors/" + @instructor.id.to_s + "/text", method: "get") do %>
+  <%= label_tag(:message, "message") %>
+  <%= text_field_tag(:message) %>
+  <%= submit_tag("Send Text!") %>
+<% end %>
+
+<br/>
+<%= link_to 'Edit', edit_instructor_path(@instructor) %> |
+<%= link_to 'Back', instructors_path %>
