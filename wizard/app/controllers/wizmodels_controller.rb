@@ -18,7 +18,8 @@ class WizmodelsController < ApplicationController
     @action = "new"
     Wizard::Application.config.current_step = Wizard::Application.config.steps[0]
     Wizard::Application.config.current_index = 0
-    session[:wizmodel_params].clear
+    #session[:wizmodel_params].clear
+    session[:wizmodel_params] = {}
   end
 
   # GET /wizmodels/1/edit
