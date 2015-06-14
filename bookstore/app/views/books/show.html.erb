@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @book.title %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @book.author %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @book.price %>
+</p>
+
+<h2>Buy it!</h2>
+
+<%= form_tag("/books/" + @book.id.to_s + "/add_to_cart", method: "put") do %>
+  <%= label_tag(:quantity, "quantity") %>
+<%= number_field_tag(:quantity, value = 0, options ={min: 0}) %>
+<%= submit_tag("Add to Cart") %>
+<% end %>
+
+<%= link_to 'View Cart?', cart_items_path %>
+<%= link_to 'Edit', edit_book_path(@book) %> |
+<%= link_to 'Back', books_path %>
