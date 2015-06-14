@@ -1,6 +1,9 @@
 <p id="notice"><%= notice %></p>
 <h1>Your Cart</h1>
 
+<p>DEBUG pub key: <%= ENV['PUBLISHABLE_KEY'] %></p>
+<p>DEBUG s key: <%= ENV['SECRET_KEY'] %></p>
+
 <table>
   <thead>
     <tr>
@@ -29,14 +32,18 @@
   <article>
     <label class="amount">
       <span>Amount: $<%= @total_charges %></span>
+      <% session[:total_charges] = @total_charges * 100 %>
     </label>
   </article>
 
   <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-          data-key="sk_test_o805M12t09E78dxlfiLT1Ggl"
+          data-key="pk_test_Fz4IQoBNYlipeTIGBxuVfopu"
+          data-name="RailsU Bookstore"
           data-email="<%= current_student.email %>"
           data-description="bookstore charges"
-          data-amount=<%= @total_charges * 100 %></script>
+          data-amount=<%= @total_charges * 100 %> >
+   </script>
 <% end %>
 <br>
 <%= link_to 'Shop for more items', books_path %>
+Total charges = <%= session[:total_charges] %>
