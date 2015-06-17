@@ -37,7 +37,7 @@
   </article>
 
   <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-          data-key="pk_test_Fz4IQoBNYlipeTIGBxuVfopu"
+          data-key="<%= ENV['PUBLISHABLE_KEY'] %>"
           data-name="RailsU Bookstore"
           data-email="<%= current_student.email %>"
           data-description="bookstore charges"
@@ -46,4 +46,3 @@
 <% end %>
 <br>
 <%= link_to 'Shop for more items', books_path %>
-Total charges = <%= session[:total_charges] %>
